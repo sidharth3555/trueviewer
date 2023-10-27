@@ -10,7 +10,7 @@ aap.set("views", path.join(__dirname, "views"));
  aap.use(express.urlencoded({ extended: true }));
 aap.use(methodOverride("_method"));
 
-
+//sid
 main().then(()=>{
     console.log("connected to db");
 })
