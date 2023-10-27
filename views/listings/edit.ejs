@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wanderlust</title>
+  </head>
+  <body>
+    <h3>Edit your Listing</h3>
+
+<!-- look carefully the value field -->
+<!-- here value means initial value means the previous values before editing -->
+<!-- listinggg is an object -->
+<!-- listinged is sent from edit route  -->
+<!-- methodoverride post to put as form can only send get or post -->
+    <form method="POST" action="/listing/<%= listinged._id %>?_method=PUT">
+      <input name="listinggg[title]" value="<%= listinged.title %>" type="text" />
+      <br /><br />
+      <textarea name="listinggg[description]">
+<%= listinged.description %></textarea
+      >
+      <br /><br />
+      <input name="listinggg[image]" value="<%= listinged.image %>" type="text" />
+      <br /><br />
+      <input name="listinggg[price]" value="<%= listinged.price %>" type="number" />
+      <br /><br />
+      <input
+        name="listinggg[country]"
+        value="<%= listinged.country %>"
+        type="text"
+      />
+      <br /><br />
+      <input
+        name="listinggg[location]"
+        value="<%= listinged.location %>"
+        type="text"
+      />
+      <br /><br />
+      <button>Edit</button>
+    </form>
+  </body>
+</html>

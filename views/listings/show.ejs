@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>listing details</h3>
+    <ul>
+    <li><%= listingp.title %></li>
+    <li><%= listingp.description %></li>
+    <li><%= listingp.price.toLocaleString("en-IN") %></li> 
+    <!-- tolocalestring converts to string with en(indian) comma separated for currency -->
+    <li><%= listingp.location %></li>
+    <li><%= listingp.country %></li>
+    </ul>
+    <a href="/listing/<%= listingp._id %>/edit">Edit this Listing</a>
+    <br /><br />
+    <form method="POST" action="/listing/<%=listingp._id%>?_method=DELETE">
+        <button>Delete this listing</button>
+</body>
+</html>
