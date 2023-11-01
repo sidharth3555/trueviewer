@@ -4,11 +4,18 @@ const mongoose = require("mongoose");
 const path =require("path");
 const listing = require('./models/listing.js');
 const methodOverride = require("method-override");
+//ejs mate is used to show same data on all pages
+//no matter what displayed in body example a navbar
+//which is displayed on top of all pages
+const ejsmate = require("ejs-mate")
 
 aap.set("view engine", "ejs");
 aap.set("views", path.join(__dirname, "views"));
  aap.use(express.urlencoded({ extended: true }));
 aap.use(methodOverride("_method"));
+aap.engine('ejs',ejsmate);
+//to serve static files
+aap.use(express.static(path.join(__dirname,"/public")));
 
 
 main().then(()=>{

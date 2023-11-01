@@ -18,6 +18,7 @@ async function main() {
 }
 
 const initDB = async () => {
+  // first delete the data then insert data from data.js
   await listing.deleteMany({});
   await listing.insertMany(initData.data);////const initdata is  an obj  and key is data from  module.exports = { data: sampleListings };
   console.log("data was initialized");
