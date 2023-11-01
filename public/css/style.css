@@ -42,3 +42,36 @@
     justify-content: center;
     align-items: space-evenly;
 }
+
+/* cards styling */
+.card{
+    border:none !important;
+    border-bottom: 2rem;
+
+}
+
+.card-img-top{
+    border-radius: 1rem !important;
+    width:100% !important;
+    object-fit: cover !important;
+}
+.card-body{
+    padding: 0 !important;
+}
+.card-text p{
+    font-weight: 400;
+}
+ .listing-link{
+    text-decoration: none;
+ }
+
+ /* card overlay set in index.ejs before image tag */
+ .card-img-overlay{
+    opacity: 0;
+ }
+
+ .card-img-overlay:hover{
+    /* while hovering a whiteish blur of opacity 0.2 will be displayed */
+    opacity: 0.2;
+    background-color: white;
+ }
