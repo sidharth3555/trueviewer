@@ -1,6 +1,7 @@
 const mongoose =require("mongoose");
 const Schema = mongoose.Schema;
  
+// title,image,price,location,country
 const listingschema =  new Schema({
 
     title:{
