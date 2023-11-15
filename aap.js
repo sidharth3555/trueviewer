@@ -8,6 +8,9 @@ const methodOverride = require("method-override");
 //no matter what displayed in body example a navbar
 //which is displayed on top of all pages
 const ejsmate = require("ejs-mate")
+const wrapasync=require("./utils/wrapasync.js")
+const ExpressError=require("./utils/expresserror.js")
+
 
 aap.set("view engine", "ejs");
 aap.set("views", path.join(__dirname, "views"));
@@ -46,49 +49,80 @@ aap.get("/",(req,res)=>{
 // });
 
 //index route
-aap.get("/listing", async (req, res) => {
+aap.get("/listing", wrapasync (async(req, res) => {
     const allListing = await listing.find({});
     res.render("listings/index.ejs", { allListing });
     //console.log(allListing);
-  });
+
+  }));
 
  //New listing Route
      //if u keep new route after show route
      //it will treat it as id i.e(/listing/:id)
      //and search in db that ill give error
      //first it will check for new then id
-aap.get("/listing/new", (req, res) => {
+aap.get("/listing/new", wrapasync(async(req, res) => {
     res.render("listings/new.ejs");
-  });
+  }));
 
   //show route(read)
-  aap.get("/listing/:id",async(req,res)=>{
+  aap.get("/listing/:id",wrapasync(async(req,res)=>{
     let{id} = req.params;
    const listingp = await listing.findById(id);
    res.render("listings/show.ejs",{listingp});
-  });
+  }));
 
 
 //Create Route
-aap.post("/listing", async (req, res) => {
+aap.post("/listing", wrapasync (async(req, res,next) => {
     //long method
     //let{title,description,image,price,country,location}=req.body;
     //short method mention ex:- name="listing[description]" in new.ejs
     //here listing acts as obj and description is key
+
+
+if(!req.body.listinggg){
+  // only apply if we re sending data for modification to server like new entry
+  //if there is no object content inside listinggg body
+throw new ExpressError(400,"send valid data for listing")
+}
     const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
-    await newListing.save();
-    res.redirect("/listing");
-  });
+        await newListing.save();
+        res.redirect("/listing");
+
+})
+);
+
+//without wrapasync
+    //    try{ const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
+//     await newListing.save();
+//     res.redirect("/listing");
+// }
+// catch(err){
+//   // aap.post .....next parameter added for middleware
+// next(err);
+// //above next calls the aap.use next middleware
+// }
+
+ 
+ 
+ 
   //Edit Route
-aap.get("/listing/:id/edit", async (req, res) => {
+aap.get("/listing/:id/edit", wrapasync (async(req, res) => {
     let { id } = req.params;
     const listinged = await listing.findById(id);
     res.render("listings/edit.ejs", { listinged });
-  });
+  }));
 
   //Update Route
-aap.put("/listing/:id", async (req, res) => {
-    let { id } = req.params;
+aap.put("/listing/:id", wrapasync (async(req, res) => {
+  if(!req.body.listinggg){
+    // only apply if we re sending data for modification to server like new entry
+    //if there is no object content inside listinggg body
+  throw new ExpressError(400,"send valid data for listing")
+  }
+  
+  let { id } = req.params;
     console.log("id is",id);
     // here ...req.body.listingg is a js Object
     // which contains all parameters , ... it 
@@ -97,16 +131,37 @@ aap.put("/listing/:id", async (req, res) => {
     await listing.findByIdAndUpdate(id, { ...req.body.listinggg });
     console.log("saved");
     res.redirect(`/listing/${id}`);
-  });
+  }));
 
   //Delete Route
-aap.delete("/listing/:id", async (req, res) => {
+aap.delete("/listing/:id", wrapasync (async(req, res) => {
     let { id } = req.params;
     let deletedListing = await listing.findByIdAndDelete(id);
     console.log(deletedListing);
     res.redirect("/listing");
-  });
+  }));
   
+
+
+
+  //  //after requiring expresserror
+//match the url req with all the routes if not available then page not found
+aap.all("*",(req,res,next)=>{
+  next(new ExpressError(404,"page not found"))
+  //constructor(statuscode,message)
+})
+
+
+//handling error
+  aap.use((err,req,res,next)=>{
+    let{statuscode,message}=err;
+    // res.render("error.ejs",{message});
+    res.render("error.ejs",{message});
+
+    
+    
+    // res.status(statuscode).send(message);
+  });
 
   aap.listen(8080,()=>{
     console.log("listenining on 8080");
