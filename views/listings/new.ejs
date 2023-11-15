@@ -1,39 +1,72 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title></title>
-  </head>
+<% layout("/layouts/boilerplate") %>
   <body>
     <!-- listinggg is an object -->
-
+<div class="row"> 
+  <!-- offset for giving space from left -->
+  <div class="col-8 offset-2">
     <h3>Create a New Listing</h3>
-    <form method="POST" action="/listing">
-      <input name="listinggg[title]" placeholder="enter title" type="text" />
-      <br /><br />
-      <textarea
+    <form method="POST" action="/listing" novalidate class="needs-validation">
+      <!-- above we used novalidate to use bootstrap validation instead of default browser validation  refer bootstrap form va;idation for more-->
+     
+      <div  class="mb-3">
+        <label for="title" class="form-label">title</label>
+     <input required name="listinggg[title]" placeholder="enter title" type="text"  class="form-control"/>
+<div class="valid-feedback">title looks good</div>
+      </div>
+     
+      <div class="mb-3">
+        <label  for="discription" class="form-label">discription</label>
+         <textarea
+         required
+         class="form-control"
         name="listinggg[description]"
         placeholder="enter description"
       ></textarea>
-      <br /><br />
-      <input
+      <div class="invalid-feedback">please enter description</div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="image" class="form-label">image link</label>
+        <input
+        class="form-control"
         name="listinggg[image]"
         placeholder="enter image URL/Link"
         type="text"
       />
-      <br /><br />
-      <input name="listinggg[price]" placeholder="enter price" type="number" />
-      <br /><br />
-      <input name="listinggg[country]" placeholder="enter country" type="text" />
-      <br /><br />
+      </div class="mb-3">
+      <label 
+    
+      for="price" class="form-label">price</label>
+      <input required type="number" name="listing[price]" placeholder="listing price" class="form-control">
+      <div class="invalid-feedback">please enter price</div>
+      </div>
+      
+      <div class="mb-3">
+        <label for="country" class="form-label">country</label>
+        <input required name="listinggg[country]" placeholder="enter country" type="text" class="form-control"/>
+        <div class="invalid-feedback">enter country name</div>
+      </div>
+      
+      
+    <div class="mb-3">
+      <label for="location" class="form-label">location</label>
+
       <input
+      required
+      class="form-control"
         name="listinggg[location]"
         placeholder="enter location"
         type="text"
       />
-      <br /><br />
-      <button>Add</button>
+      <div class="invalid-feedback">please enter location</div>
+    </div>
+
+    <br><br>
+
+    <button class="btn btn-dark">Add</button>
     </form>
+    <br>
+    <br>
   </body>
-</html>
+</div>
+</div>

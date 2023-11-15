@@ -1,17 +1,49 @@
 <% layout("/layouts/boilerplate") %>
+<div class="row">
+    <div class="col-8 offset-2">
+<!-- row col for centering -->
 
-<body>
     <h3>listing details</h3>
-    <ul>
+ </div>
+<div class="card col-6 offset-2">
+
+    <!-- here we have two classes as card-img-top and show-img -->
+        <img src="<%=listingp.image%>" class="card-img-top show-img" alt="listing_image">
+        <div class="card-body">
+            <p class="card-text">
+                <b><%=listingp.title%></p></b><br>
+                <li><%= listingp.description %></li><br>
+                    <!-- tolocalestring converts to string with en(indian) comma separated for currency -->
+
+                <li><%= listingp.price.toLocaleString("en-IN") %></li> <br>
+
+                <li><%= listingp.location %></li><br>
+                <li><%= listingp.country %></li>
+        
+            </div>
+         
+</div>
+
+    <!-- <ul>
     <li><%= listingp.title %></li>
-    <li><%= listingp.description %></li>
-    <li><%= listingp.price.toLocaleString("en-IN") %></li> 
-    <!-- tolocalestring converts to string with en(indian) comma separated for currency -->
-    <li><%= listingp.location %></li>
-    <li><%= listingp.country %></li>
-    </ul>
-    <a href="/listing/<%= listingp._id %>/edit">Edit this Listing</a>
-    <br /><br />
+   
+    </ul> -->
+
+    
+
+<div class="btns">
+
+    <a href="/listing/<%= listingp._id %>/edit" class="btn btn-dark offset-2 edit-btn" style="background-color: red;">Edit</a>
+    
+
+
     <form method="POST" action="/listing/<%=listingp._id%>?_method=DELETE">
-        <button>Delete this listing</button>
-</body>
+        <button class="btn btn-dark  offset-4">Delete</button>
+
+
+
+
+    </div>
+</div>
+
+</div>
