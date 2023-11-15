@@ -1,42 +1,79 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wanderlust</title>
-  </head>
+<% layout("/layouts/boilerplate") %>
+
   <body>
     <h3>Edit your Listing</h3>
+    <br><br>
 
 <!-- look carefully the value field -->
 <!-- here value means initial value means the previous values before editing -->
 <!-- listinggg is an object -->
 <!-- listinged is sent from edit route  -->
 <!-- methodoverride post to put as form can only send get or post -->
-    <form method="POST" action="/listing/<%= listinged._id %>?_method=PUT">
-      <input name="listinggg[title]" value="<%= listinged.title %>" type="text" />
-      <br /><br />
-      <textarea name="listinggg[description]">
-<%= listinged.description %></textarea
-      >
-      <br /><br />
+    <form method="POST" action="/listing/<%= listinged._id %>?_method=PUT" novalidate class="needs-validation">
+      
+      <div class="mb-3">
+        <label  for="title" class="form-label" >title</label>
+
+        <input  name="listinggg[title]" value="<%= listinged.title %>" type="text" class="form-control" required />
+   
+      </div>
+      
+      <div class="mb-3">
+      <label for="discription" class="form-label">discription</label>
+      <textarea class="form-control"  required name="listinggg[description]">
+        <%= listinged.description %></textarea
+              >
+
+      </div>
+
+
+      <div class="mb-3">
+      <label for="image" class="form-label">image</label>
       <input name="listinggg[image]" value="<%= listinged.image %>" type="text" />
-      <br /><br />
-      <input name="listinggg[price]" value="<%= listinged.price %>" type="number" />
-      <br /><br />
-      <input
+
+
+      </div>
+
+
+      <div class="mb-3">
+      <label for="price" class="form-label">price</label>
+
+      <input  name="listinggg[price]" value="<%= listinged.price %>" type="number" class="form-control" required/>
+
+      </div>
+
+
+      <div class="mb-3">
+      
+      
+        <label for="country" class="form-label">country</label>
+
+        <input
+        class="form-control"  required
         name="listinggg[country]"
         value="<%= listinged.country %>"
         type="text"
       />
-      <br /><br />
-      <input
+      </div>
+
+      <div class="mb-3">
+        <label for="location" class="location">discription</label>
+
+        <input
+        class="form-control" required
         name="listinggg[location]"
         value="<%= listinged.location %>"
         type="text"
+        class="form-label"
       />
-      <br /><br />
-      <button>Edit</button>
+      </div>
+      
+      
+      
+    
+      <button class="btn btn-dark">Edit</button>
+
     </form>
+    
   </body>
-</html>
+  <script src="/js/script.js"></script>
