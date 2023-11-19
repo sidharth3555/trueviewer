@@ -10,7 +10,7 @@ const methodOverride = require("method-override");
 const ejsmate = require("ejs-mate")
 const wrapasync=require("./utils/wrapasync.js")
 const ExpressError=require("./utils/expresserror.js")
-
+const{listingschema}=require("./schema.js")
 
 aap.set("view engine", "ejs");
 aap.set("views", path.join(__dirname, "views"));
@@ -48,6 +48,18 @@ aap.get("/",(req,res)=>{
 
 // });
 
+
+//schema validation
+const validatelisting = (req,res,next)=>{
+  let {error} = listingschema.validate(req.body);
+if(res.error){
+  throw new ExpressError(400,error);
+}
+else{
+  next();
+}
+}
+
 //index route
 aap.get("/listing", wrapasync (async(req, res) => {
     const allListing = await listing.find({});
@@ -81,16 +93,42 @@ aap.post("/listing", wrapasync (async(req, res,next) => {
     //here listing acts as obj and description is key
 
 
-if(!req.body.listinggg){
-  // only apply if we re sending data for modification to server like new entry
-  //if there is no object content inside listinggg body
-throw new ExpressError(400,"send valid data for listing")
-}
-    const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
-        await newListing.save();
-        res.redirect("/listing");
+//after requiring joi
+//validate schema first call function validate listing
+// let res = listingschema.validate(req.body);
+// console.log(result);
+const newListing = new listing(req.body.listing);
 
+await newListing.save();
+        res.redirect("/listing");
 })
+
+
+// if(!req.body.listinggg){
+//   // only apply if we re sending data for modification to server like new entry
+//   //if there is no object content inside listinggg body
+// throw new ExpressError(400,"send valid data for listing")
+// }
+    // const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
+        // await newListing.save();
+        // res.redirect("/listing");
+
+
+    //  if(!newListing.title){
+    //   throw new ExpressError(400,"title is missing")
+    //  }   
+     
+
+    //  if(!newListing.description){
+    //   throw new ExpressError(400,"description is missing")
+    //  } 
+     
+
+    //  if(!newListing.location){
+    //   throw new ExpressError(400,"location is missing")
+    //  } 
+
+      
 );
 
 //without wrapasync
@@ -108,19 +146,19 @@ throw new ExpressError(400,"send valid data for listing")
  
  
   //Edit Route
-aap.get("/listing/:id/edit", wrapasync (async(req, res) => {
+aap.get("/listing/:id/edit",validatelisting, wrapasync (async(req, res) => {
     let { id } = req.params;
     const listinged = await listing.findById(id);
     res.render("listings/edit.ejs", { listinged });
   }));
 
   //Update Route
-aap.put("/listing/:id", wrapasync (async(req, res) => {
-  if(!req.body.listinggg){
+aap.put("/listing/:id",validatelisting, wrapasync (async(req, res) => {
+  //if(!req.body.listinggg){
     // only apply if we re sending data for modification to server like new entry
     //if there is no object content inside listinggg body
-  throw new ExpressError(400,"send valid data for listing")
-  }
+  // throw new ExpressError(400,"send valid data for listing")
+  // }
   
   let { id } = req.params;
     console.log("id is",id);
@@ -131,7 +169,8 @@ aap.put("/listing/:id", wrapasync (async(req, res) => {
     await listing.findByIdAndUpdate(id, { ...req.body.listinggg });
     console.log("saved");
     res.redirect(`/listing/${id}`);
-  }));
+  })
+);
 
   //Delete Route
 aap.delete("/listing/:id", wrapasync (async(req, res) => {
