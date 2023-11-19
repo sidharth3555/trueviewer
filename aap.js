@@ -154,7 +154,7 @@ aap.get("/listing/:id/edit",validatelisting, wrapasync (async(req, res) => {
 
   //Update Route
 aap.put("/listing/:id",validatelisting, wrapasync (async(req, res) => {
-  if(!req.body.listinggg){
+  //if(!req.body.listinggg){
     // only apply if we re sending data for modification to server like new entry
     //if there is no object content inside listinggg body
   // throw new ExpressError(400,"send valid data for listing")
@@ -169,7 +169,8 @@ aap.put("/listing/:id",validatelisting, wrapasync (async(req, res) => {
     await listing.findByIdAndUpdate(id, { ...req.body.listinggg });
     console.log("saved");
     res.redirect(`/listing/${id}`);
-  }));
+  })
+);
 
   //Delete Route
 aap.delete("/listing/:id", wrapasync (async(req, res) => {
