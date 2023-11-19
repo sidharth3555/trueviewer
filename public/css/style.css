@@ -80,6 +80,7 @@ body{
     /* while hovering a whiteish blur of opacity 0.2 will be displayed */
     opacity: 0.2;
     background-color: white;
+
  }
   /* show page */
   .show-img{
@@ -89,4 +90,6 @@ body{
   .btns{
     display: flex;
   }
+
+ }
 

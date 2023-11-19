@@ -20,7 +20,7 @@ aap.engine('ejs',ejsmate);
 //to serve static files
 aap.use(express.static(path.join(__dirname,"/public")));
 
-//sid
+
 main().then(()=>{
     console.log("connected to db");
 })
