@@ -19,7 +19,8 @@ aap.use(methodOverride("_method"));
 aap.engine('ejs',ejsmate);
 //to serve static files
 aap.use(express.static(path.join(__dirname,"/public")));
-
+//aap.use is a middleware which gives acess to static files inside public
+//folder to any request whether that is get or postor 
 
 main().then(()=>{
     console.log("connected to db");

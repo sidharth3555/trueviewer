@@ -1,0 +1,27 @@
+1111/////express.ststic/////
+
+express.static(root, [options])
+Parameters: The root parameter describes the root directory from which to serve static assets. 
+
+Return Value: It returns an Object. 
+
+
+The express.static() function is a built-in middleware function in Express. It serves static files and is based on serve-static. 
+
+------Today most websites are not static documents anymore but are files that get altered by javascript by manipulating the DOM, so I don't think any html files should be considered as static files?
+
+The files for your pages themselves are still static. That is, you are not creating them dynamically with server-side code. What happens in the browser doesn't matter in this context... the idea is that you do not need to generate these files on the fly, as their content does not change.
+
+I understand javascript files that are included in html or css are best stored in the client directory?
+
+Where you store your files on the server doesn't matter. What does matter is that you don't generally want to serve static files from your Node.js application. Tools like express.static are for convenience only. Sometimes, you may have a low traffic application. In these cases, it is perfectly acceptable to serve files with your Node.js app. For anything with a decent traffic load, it's best to leave static serving up to a real web server such as Nginx, since these servers are far more efficient than your Node.js application.
+
+
+22222///////aap.use//////
+-----we use aap.use while defining middlewares ,
+
+if we have defined any path then it will only work for that path else,,
+
+aap.use is generally used so that it will work for any request whether that is get or post or ..
+,
+middleware is like a gate that is executed after receiving the request and before sending the response-----
