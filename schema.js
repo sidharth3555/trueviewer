@@ -2,7 +2,7 @@ const joi = require('joi');
 
 //now we will validate listing schema 
 //an object will come inside joy obj called listing
-module.exports.listingscshema = joi.object({
+module.exports.listingschema = joi.object({
     listing:joi.object({
          title : joi.string.required(),
          description: joi.string.required(),
