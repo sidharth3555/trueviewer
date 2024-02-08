@@ -100,7 +100,7 @@ aap.post("/listing",validatelisting, wrapasync (async(req, res,next) => {
 //validate schema first call function validate listing
 // let res = listingschema.validate(req.body);
 // console.log(result);
-const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
+const newListing = new listing(req.body.listinggg);// a new instance of listinggg got will be saved to db
 
 await newListing.save();
         res.redirect("/listing");
