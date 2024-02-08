@@ -10,7 +10,7 @@ const methodOverride = require("method-override");
 const ejsmate = require("ejs-mate")
 const wrapasync=require("./utils/wrapasync.js")
 const ExpressError=require("./utils/expresserror.js")
-const{listingschema}=require("./schema.js")
+const{listingschema}=require("./schema.js")//see explanation in theory l.n 29
 
 aap.set("view engine", "ejs");
 aap.set("views", path.join(__dirname, "views"));
@@ -51,8 +51,10 @@ aap.get("/",(req,res)=>{
 
 
 //schema validation
-const validatelisting = (req,res,next)=>{
-  let {error} = listingschema.validate(req.body);
+const validatelisting = (req, res, next)=>{
+  //.validate joi not working
+let {error} = listingschema.validate(req.body);
+  
 if(res.error){
   throw new ExpressError(400,error);
 }
@@ -87,10 +89,10 @@ aap.get("/listing/new", wrapasync(async(req, res) => {
 
 
 //Create Route
-aap.post("/listing", wrapasync (async(req, res,next) => {
+aap.post("/listing",validatelisting, wrapasync (async(req, res,next) => {
     //long method
     //let{title,description,image,price,country,location}=req.body;
-    //short method mention ex:- name="listing[description]" in new.ejs
+    //short method mention ex:- name="listinggg[description]" in new.ejs
     //here listing acts as obj and description is key
 
 
@@ -98,7 +100,7 @@ aap.post("/listing", wrapasync (async(req, res,next) => {
 //validate schema first call function validate listing
 // let res = listingschema.validate(req.body);
 // console.log(result);
-const newListing = new listing(req.body.listing);
+const newListing = new listing(req.body.listinggg);// A new instance of listinggg got will be saved to db
 
 await newListing.save();
         res.redirect("/listing");
@@ -147,7 +149,7 @@ await newListing.save();
  
  
   //Edit Route
-aap.get("/listing/:id/edit",validatelisting, wrapasync (async(req, res) => {
+aap.get("/listing/:id/edit", wrapasync (async(req, res) => {
     let { id } = req.params;
     const listinged = await listing.findById(id);
     res.render("listings/edit.ejs", { listinged });
