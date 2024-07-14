@@ -1,13 +1,19 @@
 <% layout("/layouts/boilerplate") %>
-  <body>
+  <body >
     <!-- listinggg is an object -->
 <div class="row"> 
   <!-- offset for giving space from left -->
   <div class="col-8 offset-2">
-    <h3>Create a New Listing</h3>
-    <form method="POST" action="/listing" novalidate class="needs-validation">
+    <h3>create your product page</h3>
+    <form method="POST" action="/listing" novalidate class="needs-validation" enctype="multipart/form-data">
+
       <!-- above we used novalidate to use bootstrap validation instead of default browser validation  refer bootstrap form va;idation for more-->
-     
+     <!-- novalidate is bootstrap property -->
+    <!-- needs validation script written in public/js folder(taken from bootstrap website form validation) -->
+    <!-- its script added/included at layouts/boilerplate.ejs line no 47 -->
+
+
+    <div class=" mb-3 mt-3">
       <div  class="mb-3">
         <label for="title" class="form-label">title</label>
      <input required name="listinggg[title]" placeholder="enter title" type="text"  class="form-control"/>
@@ -25,14 +31,24 @@
       <div class="invalid-feedback">please enter description</div>
       </div>
       
-      <div class="mb-3">
-        <label for="image" class="form-label">image link</label>
+      <!-- <div class="mb-3"> -->
+        <!-- <label for="image" class="form-label">image link</label>
         <input
         class="form-control"
         name="listinggg[image]"
         placeholder="enter image URL/Link"
         type="text"
+      /> -->
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">upload item image</label>
+        <input
+        class="form-control"
+        name="listinggg[image]"
+        type="file"
+        required
       />
+      </div>
       </div class="mb-3">
       <label 
     
@@ -43,7 +59,7 @@
       
       <div class="mb-3">
         <label for="country" class="form-label">country</label>
-        <input required name="listinggg[country]" placeholder="enter country" type="text" class="form-control"/>
+        <input required name="listinggg[location]" placeholder="enter country" type="text" class="form-control"/>
         <div class="invalid-feedback">enter country name</div>
       </div>
       
@@ -54,7 +70,7 @@
       <input
       required
       class="form-control"
-        name="listinggg[location]"
+        name="listinggg[country]"
         placeholder="enter location"
         type="text"
       />

@@ -1,0 +1,3 @@
+why in navbar its only showing home all listings addnew option , while initially there were many options
+
+follow navbar.ejs end

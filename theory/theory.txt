@@ -25,3 +25,15 @@ if we have defined any path then it will only work for that path else,,
 aap.use is generally used so that it will work for any request whether that is get or post or ..
 ,
 middleware is like a gate that is executed after receiving the request and before sending the response-----
+
+/////////////const{listingschema}=require("./schema.js")//see explanation in theory l.n 29/
+
+
+here {} used because schema.js have a joi object with some properties so to require that {} is used(for conformation hover on {listingschema} and you will get to know)
+
+for example
+  const obj={a:1,b:2};
+const{a,b}=obj;
+//the above line is equivalent to 
+const a=obj.a;
+const b=obj.b;

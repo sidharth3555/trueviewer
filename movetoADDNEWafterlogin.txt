@@ -1,0 +1,42 @@
+so the problem is that if the user is not logedin and tries to create new listing then it 
+will be redirected to login page but after logging in it will be redirected to home page
+
+As user wanted to create a new listing -> then he moved to login as he wasnt logged in
+-> after login he should return to the create new listing page but he is redirected to home page
+
+
+To tackle this we will use req.originalUrl method in authmiddlewire.js file and /login route from routes folder(user.js).
+Now what this method does?
+
+//difference between original path and original url
+//console.log(req.path)//it will only show the half route (mentioned during restructuring of routes)
+//console.log(req.originalUrl)//it will return the complete path
+
+//for example if we are clicking on new listing button(isloggedin function will be called) then value will be returned as
+//   /new    
+//   /listings/new respectively
+
+As we saw it will return the complete path to which it should be redirected.
+
+We will first store the req.originalUrl in req.session.redirectUrl(storing in session userdefined variables) inside isloggedin function
+then inside /new route res.redirect(res.session.redirectUrl) as it is stored in session
+
+
+But the problem here is that after logging in, allthe session variables are deleted so,
+res.session.redirectUrl will return an empty object to /new route so it wont get the path to redirect
+
+so we will store this in locals as session dont have the access to delete the local variables
+
+
+module.exports.isloggedin {...........................
+   req.session.redirectUrl = req.originalUrl;
+   ................
+}
+
+module.exports.saveredirecturl = (req,res,next)=>{
+  if(req.session.redirectUrl){
+    //if redirectUrl exists(from above code) then store that in locals else next() middleware
+    res.locals.redirectUrl = req.session.redirectUrl;
+  }
+  next();
+};

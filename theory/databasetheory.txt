@@ -1,0 +1,29 @@
+see all in mongo compass in pc database name sidbnb
+already defined database name in mongourl= init/index.js
+
+1//what is the difference between database and schema????
+
+a database is any collection of data.the data in a database is usually organized in such a way that 
+the info is easily accessible;
+A schema is basically a formal description of how a database is formed and where everything is located.
+
+2//whats the difference between model and schema???
+
+a model is basically a higher level representation of data where as schema is the lower level 
+representation. for example in this project in models folder there are schemas like listing schema,review schema etc.
+
+theoritically i have learned that in mongodb, database is a collection of documents(gfg).
+but i havent got exposer to work on a complex structure where there are different collections
+but from  my project what i have understood is that (below)
+
+(see all in mongo compass in pc database name sidbnb)
+in our project////////////////////////practically>>>>important>>>>>
+a/schemas define models(means sehemas are exported as models) like review model,listing model
+b/models construct documents\
+c/documents go in databases
+
+
+3//how listingmodel and review model are related in this project??
+
+in this project one listing can have many reviews so 
+it is a one to many relationship 

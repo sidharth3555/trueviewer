@@ -1,7 +1,7 @@
 <% layout("/layouts/boilerplate") %>
 
   <body>
-    <h3>Edit your Listing</h3>
+    <h3>product update</h3>
     <br><br>
 
 <!-- listinggg used for  line 169(aap.js)   await listing.findByIdAndUpdate(id, { ...req.body.listinggg });
@@ -12,7 +12,7 @@ so that database can align names with schema name parameters -->
 <!-- listinggg is an object -->
 <!-- listinged is sent from edit route  -->
 <!-- methodoverride post to put as form can only send get or post -->
-    <form method="POST" action="/listing/<%= listinged._id %>?_method=PUT" novalidate class="needs-validation">
+    <form enctype="multipart/form-data" method="POST" action="/listing/<%= listinged._id %>?_method=PUT" novalidate class="needs-validation">
       
       <div class="mb-3">
         <label  for="title" class="form-label" >title</label>
@@ -23,18 +23,21 @@ so that database can align names with schema name parameters -->
       
       <div class="mb-3">
       <label for="discription" class="form-label">discription</label>
-      <textarea class="form-control"  required name="listinggg[description]">
+      <textarea class="form-control"   name="listinggg[description]">
         <%= listinged.description %></textarea
               >
 
       </div>
 
-
       <div class="mb-3">
-      <label for="image" class="form-label">image</label>
-      <input name="listinggg[image]" value="<%= listinged.image %>" type="text" />
-
-
+       <b>YOUR PREVIOUS UPLOAD : </b> 
+        <img src="<%=listinged.image.url%>" alt="" height="200px" width="300px" style="border: 2px solid aquamarine ; box-shadow: 10px 10px 5px rgb(95, 187, 237);">
+        </div>
+      
+      
+      <div class="mb-3">
+      <label for="image" class="form-label">upload new image</label>
+      <input name="listinggg[image]"  type="file" />
       </div>
 
 
@@ -49,22 +52,22 @@ so that database can align names with schema name parameters -->
       <div class="mb-3">
       
       
-        <label for="country" class="form-label">country</label>
+        <label for="country" class="form-label">country of origin</label>
 
         <input
         class="form-control"  required
-        name="listinggg[country]"
+        name="listinggg[location]"
         value="<%= listinged.country %>"
         type="text"
       />
       </div>
 
       <div class="mb-3">
-        <label for="location" class="location">discription</label>
+        <label for="location" class="location">Enter raw material location details</label>
 
         <input
         class="form-control" required
-        name="listinggg[location]"
+        name="listinggg[country]"
         value="<%= listinged.location %>"
         type="text"
         class="form-label"

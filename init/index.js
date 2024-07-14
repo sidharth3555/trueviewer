@@ -24,8 +24,21 @@ async function main() {
 const initDB = async () => {
   // first delete the data then insert data from data.js
   await listing.deleteMany({});
-  await listing.insertMany(initData.data);////const initdata is  an obj  and key is data from  module.exports = { data: sampleListings };
+ console.log("///////////////////////////")
+  initData.data = initData.data.map((obj)=> ({
+    ...obj,
+    owner: "667fafdc995784da843ab80a",
+  }));
+  console.log("///////////////////////////")
+
+  await listing.insertMany(initData.data);// from  module.exports = { data: sampleListings }; see there for detail then see here below
   console.log("data was initialized");
 };
 
 initDB();
+
+
+//to insert format is dbname.insertmany([{},{},{}])
+//console.log(initData);//op:{},{},{}
+// console.log(initData.data);//op:[{},{},{}]
+//so   await listing.insertMany(initData.data);

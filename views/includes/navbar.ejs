@@ -5,19 +5,43 @@ if you click icon redirect to home
 icon from font awesome  -->
 <!-- include fontawesome cdn in your boilerplate folder -->
 <!-- fontawesome <i class="fa-solid fa-location-arrow"></i> -->
-      <a class="navbar-brand" href="/listing"><i class="fa-solid fa-location-arrow"></i>sidbnb</a>
+      <a style="color: rgb(20, 117, 235);" class="navbar-brand" href="/listing"><i  class="fa fa-check-square fa-beat" aria-hidden="true"></i>  <b></i >TRUEVIEWER</a>  </b>
       
       
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" >
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-          <!-- move to listing route -->
-          <a class="nav-link" href="/listing">ALL LISTINGS</a>
-          <a class="nav-link" href="/listing/new">add new</a>
+        <div style="margin-left: 5%;" class="navbar-nav">
+          <!-- home icon -->
+          <a class="nav-link active" aria-current="page" href="/listing"><i title="HOME PAGE" style="color: rgb(17, 97, 227);display: inline-block; margin: 0.25em; border: 1px solid silver; border-radius: 0.25em; padding: .35em 0.9em" class="fa-solid fa-home " aria-hidden="true"></i></a>   
+          <!-- move to newlisting create route -->
+          <a class="nav-link" href="/listing/new"><i title="CREATE NEW" style="color: rgb(13, 98, 235);display: inline-block; margin: 0.25em; border: 1px solid silver; border-radius: 0.25em; padding: .35em 0.9em" class="fa-solid fa-plus-square " aria-hidden="true"></i>
+          </a>
+
         </div>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+          <!-- curruser  explanation see below -->
+            <% if(!curruser){ %>
+            <a class="nav-link" href="/login"><i  title="login" style="  color: rgb(15, 114, 228);   display: inline-block; margin: 0.25em; border: 1px solid silver; border-radius: 0.25em; padding: .35em 0.9em" class="fa-solid fa-duotone fa-right-to-bracket"></i></a>
+            <a class="nav-link" href="/signup"><i title="SIGNUP" style="  color: rgb(15, 114, 228);   display: inline-block; margin: 0.25em; border: 1px solid silver; border-radius: 0.25em; padding: .35em 0.9em" class="fa-solid fa-user-plus"></i></a>
+            <% } %>
+            <% if(curruser) { %>
+              <!-- logout -->
+            <a class="nav-link" href="/logout"><i style="  color: rgb(240, 109, 8); display: inline-block; margin: 0.25em; border: 1px solid silver; border-radius: 0.25em; padding: .35em 0.9em" title="LOGOUT" class="fa-solid fa-sign-out " aria-hidden="true"></i>
+            </a>
+                   <% } %>
+          </div>
       </div>
     </div>
   </nav>
+  <!-- curruser is taken from aap.js   (res.locals.curruser = req.user)
+  curruser takes data from req.user which is a passport.js method
+  that returns user object if exists
+
+  we can not use req.user directly without importing
+  so we added that in aap.js in res.locals
+
+now if user object does not exist then show login or signup on navbar(top)
+else show logout -->

@@ -1,25 +1,30 @@
 <% layout("/layouts/boilerplate") %>
+<!-- <link href="/css/rating.css" rel="stylesheet"/> --> 
+ <!-- this above line is already included in the boiler plate -->
+
 <div class="row">
-    <div class="col-8 offset-2">
+    <div class="col-8 offset-1">
 <!-- row col for centering -->
 
-    <h3>listing details</h3>
- </div>
-<div class="card col-6 offset-2">
+<h3 style="color: rgb(30, 134, 209);font-family:cursive;"><%=listingp.title%></h3>
+
+</div>
+<div class="    card  col-5 offset-1 listing-card listing-card">
 
     <!-- here we have two classes as card-img-top and show-img -->
-        <img src="<%=listingp.image%>" class="card-img-top show-img" alt="listing_image">
+        <img src="<%=listingp.image.url%>" class="card-img-top show-img" alt="listing_image">
+        
         <div class="card-body">
             <p class="card-text">
-                <b><%=listingp.title%></p></b><br>
-                <li><%= listingp.description %></li><br>
+                
+                <i>posted by :  <%= listingp.owner.username %></i><br><br>
+                <b><%= listingp.description %></b><br>
                     <!-- tolocalestring converts to string with en(indian) comma separated for currency -->
 
-                <li><%= listingp.price %></li> <br>
-
-                <li><%= listingp.location %></li><br>
-                <li><%= listingp.country %></li>
-        
+                <p style="font-family: 'Times New Roman', Times, serif;">RS.<%= listingp.price %></p>
+                <p style="font-family: 'Times New Roman', Times, serif;">Country of origin: <%= listingp.location %></p>
+                <p style="font-family: 'Times New Roman', Times, serif;">Raw material location:  <%= listingp.country %></p></p>
+              </p>
             </div>
          
 </div>
@@ -30,20 +35,120 @@
     </ul> -->
 
     
+<% if(curruser && curruser._id.equals(listingp.owner._id)) {%>
+  <!-- the above condition is for hiding edit and delete button for those who are not owner of the listing,,
+  
+  to do that firstly we are checking if curruser exists or not if not then a logedout user can edit so 
+  the curruser should be true and curruser's id equals to owner's id 
+  if both satisfies then show the edit and delete button for the user
+
+  owner's id (.post("/"),from show.ejs req.user._id)
+  curruser(res.locals.curruser from aap.js) -->
 
 <div class="btns">
 
-    <a href="/listing/<%= listingp._id %>/edit" class="btn btn-dark offset-2 edit-btn" style="background-color: red;">Edit</a>
+    <a href="/listing/<%= listingp._id %>/edit" class="btn btn-dark offset-1 edit-btn" style="background-color: rgb(6, 118, 230);height: 40px;width: 640px;">Edit</a>
     
+</div>
+<br> <br>
+<div class="btns offset-1 ">
+  
+  
+    <form  method="POST" action="/listing/<%=listingp._id%>?_method=DELETE">
+      
+        <button style="background-color: red;height: 40px;width: 640px;" class="btn btn-dark    edit-btn">Delete</button>
+        </form>
+  </div>
+
+</div>
+
+<% } %>
 
 
-    <form method="POST" action="/listing/<%=listingp._id%>?_method=DELETE">
-        <button class="btn btn-dark  offset-4">Delete</button>
+
+<div>
+<hr>
+<% if(curruser) {%> 
+    <!-- allow only if current user exists i.e loggedin -->
+<h4>Leave a review</h4>
+
+<form action="/listing/<%= listingp._id%>/reviews" method="POST" novalidate class="needs-validation">
+    <!-- novalidate is bootstrap property -->
+    <!-- needs validation script written in public/js folder(taken from bootstrap website form validation) -->
+    <!-- its script added/included at layouts/boilerplate.ejs line no 47 -->
 
 
+<!-- horizontal bar rating -->
+    <!-- <div class=" mb-3 mt-3">
+    <label class="form-label" for="rating">Rating</label>
+    <input class="form-range" type="range" min="1" max="5" id="rating" name="review[rating]"> -->
+      <!-- type range for horizontal scrol
+        l bar -->
+<!-- </div> -->
 
 
-    </div>
+<!-- star rating -->
+<div class=" mb-3 mt-3">
+
+<!-- copied from starability github -->
+     
+<label class="form-label" for="rating">Rating</label>
+
+<fieldset class="starability-fade ">
+
+    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+    <label for="first-rate1" title="Terrible">1 star</label>
+    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+    <label for="first-rate2" title="Not good">2 stars</label>
+    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+    <label for="first-rate3" title="Average">3 stars</label>
+    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+    <label for="first-rate4" title="Very good">4 stars</label>
+    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+    <label for="first-rate5" title="Amazing">5 stars</label>
+  </fieldset>
+</div>
+
+<div class=" mb-3 mt-3">
+<label class="form-label" for="comments"></label>
+<textarea required name="review[comment]" id="comment" cols="30" rows="6" class="form-control"></textarea>
+<!-- cols and rows similar to height and weidth -->
+<div class="invalid-feedback">please submit some comments to add it rewiews</div> <!-- triggered if try to submit without writing anything -->
+<button class="btn btn-outline-dark mb-3 mt-3">submit</button>
+
+</div>
+</form>
+
+<hr>
+<% } %>
+<!-- <p><b>all reviews</b></p> -->
+<!-- <p><%= listingp.reviews %></p> -->
+
+<div class=" row row-cols-lg-4 ">
+<% for(review of listingp.reviews) { %>
+<div class="card col-6 ms-3 mb-3">
+  <div class="card-body">
+    <div style="border: 1px solid black;border-radius: 10px;max-height: 150px;overflow-y: auto;">
+    <div style="margin-left: 5%;">
+    <h5 class="card-title"><%= review.author.username %> </h5>
+    <p class="card-text"><%= review.comment %></p>
+    <!-- <p class="card-text"><%= review.rating %></p>  -->
+    <p class="starability-result card-text" data-rating="<%= review.rating %>"></p>
+    <form action="/listing/<%= listingp._id %>/reviews/<%=  review._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-sm btn-dark" style="margin-left: 5%;margin-bottom: 2%;">Delete</button>
+        
+        </form>
+</div>
+
+
+</div>
+  </div>
+</div>
+<% } %>
+</div>
+
+
 </div>
 
 </div>

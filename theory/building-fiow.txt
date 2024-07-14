@@ -1,0 +1,11 @@
+create a json file with sample data (init/data.js)
+require the file and save to mongo(init/index.js)
+create main aap.js
+require all required packages ->
+then design first all listing route
+then step by step all routes followed by review model
+after designing all routes apply error handling
+then restructure the routes(move all the routes from aap.js to all routes folder)
+apply sessions and cookies
+apply connect flash
+use passort.js for auth

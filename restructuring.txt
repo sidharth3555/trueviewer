@@ -1,0 +1,15 @@
+first we removed all the routes from aap.js and 
+pasted it in routes folder
+then we imported those routes in our aap.js folder
+
+now removed all the common parts from all routes like /listings
+
+then aap.use is used to join common parts in all links for example
+see ==
+aap.use("/listing", listings);//after importing all the routes from line no 19 we will join the routes with /listings AS,
+
+in aap.js folder
+
+
+
+formore see restructure.jpg 
