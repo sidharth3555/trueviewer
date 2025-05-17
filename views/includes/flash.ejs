@@ -1,0 +1,45 @@
+
+<% if(success && success.length) { %>
+<div style="background-color: white;color:rgb(14, 103, 238) ;border-radius:1px solid white;" class="alert alert-success alert-dismissible fade show col-2 offset-1" role="alert">
+
+    <%= success %> 
+    <!-- success is a variable declared through res.locals in aap.js folder inside aap.use -->
+
+    <button
+    type="button"
+    class="btn-close btn-white"
+    data-bs-dismiss="alert"
+    aria-label="close"
+    style="background-color: aliceblue;"
+    ></button>
+    <!-- this bootstrap button will add a cross mark on the right side of alert -->
+
+</div>
+<% } %>
+
+<!-- if we will not include, (if statement) then it will show an
+empty success bar in all pages but after 
+if statement it will show if the success is genereted in routes/listing.js in create route -->
+
+<!-- success.length is written because when we declare response.locals its an array
+so bydefault its empty so it will by pass the ,only if ,success condition (as if(error) will return true )
+so we will again check for arr.length exists or not i.e if(success && success.length) -->
+
+<!-- for error messages -->
+<% if(error && error.length) { %>
+    <div style="background-color: white;color:rgb(195, 11, 20) ;border-radius:1px solid white;" class="alert alert-denger alert-dismissible fade show col-2 offset-1" role="alert">
+    
+        <%= error %> 
+        <!-- success is a variable declared through res.locals in aap.js folder inside aap.use -->
+    
+        <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="alert"
+        aria-label="close"
+        
+        ></button>
+        <!-- this bootstrap button will add a cross mark on the right side of alert -->
+    
+    </div>
+    <% } %>

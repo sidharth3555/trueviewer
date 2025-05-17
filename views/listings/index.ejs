@@ -1,6 +1,9 @@
 <% layout("/layouts/boilerplate") %>
 
-    <h3>all listings</h3>
+<div>
+    <!-- <h3 style="color:rgb(14, 103, 238) ;">      <a style="color: rgb(20, 117, 235);font-size: 22px;letter-spacing: 2px;" class="navbar-brand" href="/listing"><i  class="fa fa-check-square fa-beat" aria-hidden="true"></i>  <b></i >WELCOME TO  TRUEVIEWER</a>  </b> -->
+    </h3>
+  
     <!-- <form method="GET" action="/listing/new">
         <button>Create New Listing</button>
       </form> -->
@@ -9,7 +12,8 @@
       <!--  row-cols-lg-3 to display 3 or more cards in a column , lg for in large screen  -->
             <!--  row-cols-md-3 to display 3 or more cards in a column , md for in medium screen  -->
               <!-- in sm small only one column -->
-       <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-1">
+       <div class="row row-cols-lg-5 row-cols-md-4 row-cols-sm-1 " style="margin-bottom: 8%;">
+        <% for(let i = 1; i <= 2; i++) { %>
         <% for(let listing of allListing){%>
 
           <!-- a tag to show listings page  -->
@@ -19,31 +23,32 @@
           
             
 
-          <div class="card" style="width: 20rem;">
+          <div class="card col listing-card" style="width: 15rem;">
 
-            <img src="<%=listing.image%>" class="card-img-top" alt="listingimage" style="height:20rem ;">
+            <img  src="<%=listing.image.url%>"   class="card-img-top" alt="listingimage" style="height:15rem ;border: 2px solid rgba(64, 62, 62, 0.043);">
             
             <!-- for bootstrap overlay effect that shows text on image -->
-            <div class="card-img-overlay">sidbnb</div>
+            <div class="card-img-overlay"><%= listing._id%></div>
 
             
             
             <div class="card-body">
-              <p class="card-text">
-                <b><%=listing.title%></b> <br>
-                <!-- toLocaleString("en-IN") converts the value to indian comma , separated -->
+              <div class="card-text">
+                <%=listing.title%>
+              
                 <!-- 8377 ; for rupee symbol -->
-                 &#8377; <%=listing.price %>/night
-              </p>
+               <p style="font-size: x-large;"><%=listing.price %></p> 
+              </div>
             </div>
           </div>
         
         </a>
         <%  } %>
-  
+        <%  } %>
+
        </div>
       
-      
+      </div>
       
       
        <!-- to print listings
@@ -51,5 +56,5 @@
             <li><a href="/listing/<%= listing._id %>"> <%=listing.title%></a></li>
              
       <%  } %> -->
-    </ul>
+    <!-- </ul> -->
 

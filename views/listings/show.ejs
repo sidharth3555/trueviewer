@@ -1,27 +1,49 @@
 <% layout("/layouts/boilerplate") %>
-<div class="row">
-    <div class="col-8 offset-2">
+<!-- <link href="/css/rating.css" rel="stylesheet"/> --> 
+ <!-- this above line is already included in the boiler plate -->
+
+<div class="row" st>
+    <div class="col-8 offset-1">
 <!-- row col for centering -->
 
-    <h3>listing details</h3>
- </div>
-<div class="card col-6 offset-2">
+<h3 style="color: rgb(30, 134, 209);font-family:cursive;"><%=listingp.title%></h3>
+
+</div>
+<div style="display: flex;gap: 80px;">
+<div class="    card  col-5 offset-1 listing-card listing-card" style="width: 50%;" >
 
     <!-- here we have two classes as card-img-top and show-img -->
-        <img src="<%=listingp.image%>" class="card-img-top show-img" alt="listing_image">
+        <img src="<%=listingp.image.url%>" class="card-img-top show-img" alt="listing_image">
+        
         <div class="card-body">
             <p class="card-text">
-                <b><%=listingp.title%></p></b><br>
-                <li><%= listingp.description %></li><br>
-                    <!-- tolocalestring converts to string with en(indian) comma separated for currency -->
+                
 
-                <li><%= listingp.price %></li> <br>
+                <i><b>@creater  <%= listingp.owner.username %></b></i><br><br>
+                <b><%= listingp.description %></b><br>
 
-                <li><%= listingp.location %></li><br>
-                <li><%= listingp.country %></li>
-        
+                <p style="font-family: 'Times New Roman', Times, serif;"><%= listingp.price %></p>
+                <p style="font-family: 'Times New Roman', Times, serif;"><%= listingp.priceunit %></p>
+                <p style="font-family: 'Times New Roman', Times, serif;">Point of contact: <%= listingp.country %> </p>
+                <!-- <p style="font-family: 'Times New Roman', Times, serif;"><a href="https://forms.gle/VkB24yVBmucm9L13A">Write to the creater</a> </p> -->
+                <p style="font-family: 'Times New Roman', Times, serif;"><a href="https://docs.google.com/forms/d/e/1FAIpQLSe2owe4kLqZQcD4TCCuX8oTk5Bvma6sEGOei9fy-od-jAS-2w/viewform?usp=pp_url&entry.628820640=<%= listingp.owner.email %>">Write to the publisher</a> </p>
+                <p style="font-family: 'Times New Roman', Times, serif;">location: <%= listingp.location %> </p></p>
+
+              </p>
             </div>
          
+</div>
+<div style="width: 50%;">
+  <iframe 
+  src="https://cdn.botpress.cloud/webchat/v2.4/shareable.html?configUrl=https://files.bpcontent.cloud/2025/05/17/15/20250517153030-17GH8LDI.json" 
+  width="60%" 
+  height="500" 
+  allow="fullscreen; clipboard-write">
+</iframe>
+
+  
+</div>
+
 </div>
 
     <!-- <ul>
@@ -30,20 +52,51 @@
     </ul> -->
 
     
+<% if(curruser && curruser._id.equals(listingp.owner._id)) {%>
+  <!-- the above condition is for hiding edit and delete button for those who are not owner of the listing,,
+  
+  to do that firstly we are checking if curruser exists or not if not then a logedout user can edit so 
+  the curruser should be true and curruser's id equals to owner's id 
+  if both satisfies then show the edit and delete button for the user
+
+  owner's id (.post("/"),from show.ejs req.user._id)
+  curruser(res.locals.curruser from aap.js) -->
 
 <div class="btns">
 
-    <a href="/listing/<%= listingp._id %>/edit" class="btn btn-dark offset-2 edit-btn" style="background-color: red;">Edit</a>
+    <a href="/listing/<%= listingp._id %>/edit" class="btn btn-dark offset-1 edit-btn" style="background-color: rgb(6, 118, 230);height: 40px;width: 640px;">Edit</a>
     
+</div>
+<br> <br>
+<div class="btns offset-1 ">
+  
+  
+    <form  method="POST" action="/listing/<%=listingp._id%>?_method=DELETE">
+      
+        <button style="background-color: red;height: 40px;width: 640px;" class="btn btn-dark    edit-btn">Delete</button>
+        </form>
+  </div>
+
+</div>
 
 
-    <form method="POST" action="/listing/<%=listingp._id%>?_method=DELETE">
-        <button class="btn btn-dark  offset-4">Delete</button>
+<% } %>
 
 
 
+<!-- <p><b>all reviews</b></p> -->
+<!-- <p><%= listingp.reviews %></p> -->
 
-    </div>
+<div class=" row row-cols-lg-15 ">
+
+<p>   .</p>
+<p>  . </p>
+<p>  . </p>
+
+
+</div>
+
+
 </div>
 
 </div>

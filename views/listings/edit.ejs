@@ -1,8 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 
   <body>
-    <h3>Edit your Listing</h3>
-    <br><br>
+    <h3 style="margin-top: 1%;color :rgb(14, 103, 238) ;">Update your post</h3>
+    
 
 <!-- listinggg used for  line 169(aap.js)   await listing.findByIdAndUpdate(id, { ...req.body.listinggg });
 so that database can align names with schema name parameters -->
@@ -12,55 +12,67 @@ so that database can align names with schema name parameters -->
 <!-- listinggg is an object -->
 <!-- listinged is sent from edit route  -->
 <!-- methodoverride post to put as form can only send get or post -->
-    <form method="POST" action="/listing/<%= listinged._id %>?_method=PUT" novalidate class="needs-validation">
+    <form enctype="multipart/form-data" method="POST" action="/listing/<%= listinged._id %>?_method=PUT" novalidate class="needs-validation" style="margin-bottom: 10%;">
       
       <div class="mb-3">
         <label  for="title" class="form-label" >title</label>
 
-        <input  name="listinggg[title]" value="<%= listinged.title %>" type="text" class="form-control" required />
+        <input  name="listinggg[title]" value="<%= listinged.title %>" type="text" class="form-control" required         style="border-color: powderblue;"        />
    
       </div>
       
       <div class="mb-3">
       <label for="discription" class="form-label">discription</label>
-      <textarea class="form-control"  required name="listinggg[description]">
+      <textarea class="form-control"   name="listinggg[description]"         style="border-color: powderblue;"      >
         <%= listinged.description %></textarea
               >
 
       </div>
 
-
       <div class="mb-3">
-      <label for="image" class="form-label">image</label>
-      <input name="listinggg[image]" value="<%= listinged.image %>" type="text" />
-
-
+       <b>YOUR PREVIOUS UPLOAD : </b> 
+        <img src="<%=listinged.image.url%>" alt="" height="200px" width="300px" style="border: 2px solid aquamarine ; box-shadow: 10px 10px 5px rgb(95, 187, 237);">
+        </div>
+      
+      
+      <div class="mb-3">
+      <label for="image" class="form-label">upload new image</label>
+      <input name="listinggg[image]"  type="file"         style="border-color: powderblue;"      />
       </div>
 
 
       <div class="mb-3">
       <label for="price" class="form-label">price</label>
 
-      <input  name="listinggg[price]" value="<%= listinged.price %>" type="number" class="form-control" required/>
+      <input  name="listinggg[price]" value="<%= listinged.price %>" type="text" class="form-control" required         style="border-color: powderblue;"      />
 
       </div>
+
+      <div class="mb-3">
+        <label for="price" class="form-label">price per unit</label>
+  
+        <input  name="listinggg[priceunit]" value="<%= listinged.priceunit %>" type="text" class="form-control" required         style="border-color: powderblue;"        />
+  
+        </div>
 
 
       <div class="mb-3">
       
       
-        <label for="country" class="form-label">country</label>
+        <label for="country" class="form-label">contact</label>
 
         <input
         class="form-control"  required
         name="listinggg[country]"
         value="<%= listinged.country %>"
         type="text"
+        style="border-color: powderblue;"
+
       />
       </div>
 
       <div class="mb-3">
-        <label for="location" class="location">discription</label>
+        <label for="location" class="location">location details</label>
 
         <input
         class="form-control" required
@@ -68,13 +80,15 @@ so that database can align names with schema name parameters -->
         value="<%= listinged.location %>"
         type="text"
         class="form-label"
+        style="border-color: powderblue;"
+
       />
       </div>
       
       
       
     
-      <button class="btn btn-dark">Edit</button>
+      <button class="btn btn-white" style="background-color:rgb(14, 103, 238) ;color: whitesmoke;width: 200px;font-size: larger;letter-spacing: 2px;">Edit</button>
 
     </form>
     

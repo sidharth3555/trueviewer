@@ -1,16 +1,23 @@
 <% layout("/layouts/boilerplate") %>
-  <body>
+  <body >
     <!-- listinggg is an object -->
-<div class="row"> 
+     
+<div class="row" style="margin-bottom: 2.5%;"> 
   <!-- offset for giving space from left -->
   <div class="col-8 offset-2">
-    <h3>Create a New Listing</h3>
-    <form method="POST" action="/listing" novalidate class="needs-validation">
+    <h3 style="color:rgb(14, 103, 238) ;margin-top: 2.5%;">post about camp</h3>
+    <form method="POST" action="/listing" novalidate class="needs-validation" enctype="multipart/form-data">
+
       <!-- above we used novalidate to use bootstrap validation instead of default browser validation  refer bootstrap form va;idation for more-->
-     
+     <!-- novalidate is bootstrap property -->
+    <!-- needs validation script written in public/js folder(taken from bootstrap website form validation) -->
+    <!-- its script added/included at layouts/boilerplate.ejs line no 47 -->
+
+
+    <div class=" mb-3 mt-3">
       <div  class="mb-3">
         <label for="title" class="form-label">title</label>
-     <input required name="listinggg[title]" placeholder="enter title" type="text"  class="form-control"/>
+     <input required name="listinggg[title]" placeholder="enter title" type="text"  class="form-control" style="border-color: powderblue;"/>
 <div class="valid-feedback">title looks good</div>
       </div>
      
@@ -21,30 +28,53 @@
          class="form-control"
         name="listinggg[description]"
         placeholder="enter description"
+        style="border-color: powderblue;"
+
       ></textarea>
       <div class="invalid-feedback">please enter description</div>
       </div>
       
-      <div class="mb-3">
-        <label for="image" class="form-label">image link</label>
+      <!-- <div class="mb-3"> -->
+        <!-- <label for="image" class="form-label">image link</label>
         <input
         class="form-control"
         name="listinggg[image]"
         placeholder="enter image URL/Link"
         type="text"
+      /> -->
+      </div>
+      <div class="mb-3">
+        <label for="image" class="form-label">upload item image</label>
+        <input
+        
+        class="form-control"
+        style="border-color: powderblue;"
+        name="listinggg[image]"
+        type="file"
+        required
+        
       />
-      </div class="mb-3">
+      </div>
+      <div class="mb-3">
       <label 
     
       for="price" class="form-label">price</label>
-      <input required type="number" name="listing[price]" placeholder="listing price" class="form-control">
+      <input required type="text" name="listinggg[price]" placeholder=" price" class="form-control"         style="border-color: powderblue;">
       <div class="invalid-feedback">please enter price</div>
       </div>
+
+    <div class="mb-3">
+    <label 
+  
+    for="price" class="form-label">price per unit</label>
+    <input required type="text" name="listinggg[priceunit]" placeholder="price unit" class="form-control"         style="border-color: powderblue;"    >
+    <div class="invalid-feedback">please enter price per unit</div>
+    </div>
       
       <div class="mb-3">
-        <label for="country" class="form-label">country</label>
-        <input required name="listinggg[country]" placeholder="enter country" type="text" class="form-control"/>
-        <div class="invalid-feedback">enter country name</div>
+        <label for="country" class="form-label">point of contact</label>
+        <input required name="listinggg[country]" placeholder="enter contact" type="text" class="form-control"         style="border-color: powderblue;"        />
+        <div class="invalid-feedback">enter contact name</div>
       </div>
       
       
@@ -53,20 +83,24 @@
 
       <input
       required
+      style="border-color: powderblue;"
+
       class="form-control"
         name="listinggg[location]"
         placeholder="enter location"
         type="text"
       />
       <div class="invalid-feedback">please enter location</div>
+      <br>
+      <button class="btn btn-white" style="background-color:rgb(14, 103, 238) ;color: whitesmoke;width: 200px;font-size: larger;letter-spacing: 2px;">Create post</button>
+
     </div>
 
     <br><br>
 
-    <button class="btn btn-dark">Add</button>
     </form>
     <br>
     <br>
+  </div>
   </body>
-</div>
-</div>
+

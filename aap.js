@@ -1,16 +1,36 @@
+if(process.env.NODE_ENV != "PRODUCTION"){
+require('dotenv').config();
+}
+// console.log(process.env);
+
 const express = require("express");
 const aap = express();
 const mongoose = require("mongoose");
 const path =require("path");
-const listing = require('./models/listing.js');
 const methodOverride = require("method-override");
 //ejs mate is used to show same data on all pages
 //no matter what displayed in body example a navbar
 //which is displayed on top of all pages
 const ejsmate = require("ejs-mate")
-const wrapasync=require("./utils/wrapasync.js")
 const ExpressError=require("./utils/expresserror.js")
-const{listingschema}=require("./schema.js")//see explanation in theory l.n 29
+
+const session = require("express-session");
+const mongostore = require('connect-mongo');
+const flash = require("connect-flash");
+
+
+const passport = require("passport");//follow passport-local-mongoose documentation for more
+const localstrategy = require("passport-local");//local stratgey is normal userid and password there
+//is also other stratgies like login with google,github etc follow passport documentation for more
+const user = require("./models/user.js");
+
+
+
+const listingsrouter = require("./routes/listing.js");
+const reviewsrouter = require("./routes/review.js");
+const userrouter = require("./routes/user.js");
+
+const dburl=process.env.ATLAS_URL;//atlas link to connect mongo
 
 aap.set("view engine", "ejs");
 aap.set("views", path.join(__dirname, "views"));
@@ -29,8 +49,79 @@ main().then(()=>{
     console.log(err);
 });
 async function main(){
-    await mongoose.connect("mongodb://127.0.0.1:27017/sidbnb");
+    await mongoose.connect(dburl);
 }
+
+
+//mongo session store
+const store=mongostore.create({
+  mongoUrl:dburl,
+  crypto:{
+    secret:process.env.SECRET,
+  },
+  touchAfter: 24*3600,//interval(in minutes) between the session updates but have to pass it in seconds 24hrsX3600sec/hr
+});
+
+//if error occurs in mongo session store
+store.on("error",()=>{
+  console.log("error in mongo session store",err);
+
+});
+
+const sessionOptions ={
+  //JavaScript objects are containers for named values called properties.
+  //it can also contain functions as properties
+   //we are creating a sessionOptions object here
+   //we are defining named values like secret which is called property
+
+   //to acess these objectName.propertyName
+   //sessionOptions.secret
+
+  store,//mongo session store
+  secret:process.env.SECRET,
+  resave:false,//reset
+  saveUninitialized:true,//modified
+  //here cookie is also an object with its own properties
+  cookie:{
+    expires:Date.now()+7*24*60*60*1000,
+    maxAge:7*24*60*60*1000,
+    httpOnly: true,
+  },
+};
+
+
+aap.use(session(sessionOptions));
+aap.use(flash());//use flash before all routes
+//bcz we gonna use this flash using routes
+
+
+//now we will implement passport after the sessions bcz
+//it can save the information used in a single session
+
+aap.use(passport.initialize());
+aap.use(passport.session());
+// use static authenticate method of model in LocalStrategy
+passport.use(new localstrategy(user.authenticate()));
+
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(user.serializeUser());////it can save the information used in a single session
+
+passport.deserializeUser(user.deserializeUser());
+
+
+
+aap.use((req,res,next)=>{
+  // refer(routes/listing.js ) in create route
+  res.locals.success = req.flash("success");//now this is rendered to all files inside views folder also to views/includes/flash.ejs
+   //console.log(req.flash)
+  // console.log(res.locals.success);//befor req.locals is an empty object with success array 
+  //console.log(res.locals)
+  res.locals.error = req.flash("error");//now this is rendered to all files inside views folder also to views/includes/flash.ejs
+  res.locals.curruser = req.user;//used in navbar.ejs
+  next();//as it has parameters ,so important to to call next() else we will be  stuck in this middleware
+  
+});
+
 
 aap.get("/",(req,res)=>{
     res.send("root");
@@ -50,143 +141,21 @@ aap.get("/",(req,res)=>{
 // });
 
 
-//schema validation
-const validatelisting = (req, res, next)=>{
-  //.validate joi not working
-let {error} = listingschema.validate(req.body);
-  
-if(res.error){
-  throw new ExpressError(400,error);
-}
-else{
-  next();
-}
-}
-
-//index route
-aap.get("/listing", wrapasync (async(req, res) => {
-    const allListing = await listing.find({});
-    res.render("listings/index.ejs", { allListing });
-    //console.log(allListing);
-
-  }));
-
- //New listing Route
-     //if u keep new route after show route
-     //it will treat it as id i.e(/listing/:id)
-     //and search in db that ill give error
-     //first it will check for new then id
-aap.get("/listing/new", wrapasync(async(req, res) => {
-    res.render("listings/new.ejs");
-  }));
-
-  //show route(read)
-  aap.get("/listing/:id",wrapasync(async(req,res)=>{
-    let{id} = req.params;
-   const listingp = await listing.findById(id);
-   res.render("listings/show.ejs",{listingp});
-  }));
-
-
-//Create Route
-aap.post("/listing",validatelisting, wrapasync (async(req, res,next) => {
-    //long method
-    //let{title,description,image,price,country,location}=req.body;
-    //short method mention ex:- name="listinggg[description]" in new.ejs
-    //here listing acts as obj and description is key
-
-
-//after requiring joi
-//validate schema first call function validate listing
-// let res = listingschema.validate(req.body);
-// console.log(result);
-const newListing = new listing(req.body.listinggg);// A new instance of listinggg got will be saved to db
-
-await newListing.save();
-        res.redirect("/listing");
-})
-
-
-// if(!req.body.listinggg){
-//   // only apply if we re sending data for modification to server like new entry
-//   //if there is no object content inside listinggg body
-// throw new ExpressError(400,"send valid data for listing")
-// }
-    // const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
-        // await newListing.save();
-        // res.redirect("/listing");
-
-
-    //  if(!newListing.title){
-    //   throw new ExpressError(400,"title is missing")
-    //  }   
-     
-
-    //  if(!newListing.description){
-    //   throw new ExpressError(400,"description is missing")
-    //  } 
-     
-
-    //  if(!newListing.location){
-    //   throw new ExpressError(400,"location is missing")
-    //  } 
-
-      
-);
-
-//without wrapasync
-    //    try{ const newListing = new listing(req.body.listinggg);// new instance of listinggg got will be saved to db
-//     await newListing.save();
-//     res.redirect("/listing");
-// }
-// catch(err){
-//   // aap.post .....next parameter added for middleware
-// next(err);
-// //above next calls the aap.use next middleware
-// }
-
- 
- 
- 
-  //Edit Route
-aap.get("/listing/:id/edit", wrapasync (async(req, res) => {
-    let { id } = req.params;
-    const listinged = await listing.findById(id);
-    res.render("listings/edit.ejs", { listinged });
-  }));
-
-  //Update Route
-aap.put("/listing/:id",validatelisting, wrapasync (async(req, res) => {
-  //if(!req.body.listinggg){
-    // only apply if we re sending data for modification to server like new entry
-    //if there is no object content inside listinggg body
-  // throw new ExpressError(400,"send valid data for listing")
-  // }
-  
-  let { id } = req.params;
-    console.log("id is",id);
-    // here ...req.body.listingg is a js Object
-    // which contains all parameters , ... it 
-    // will deconstruct the values and return for updation
-    //listinggg is the obj we created in edit.js 
-    await listing.findByIdAndUpdate(id, { ...req.body.listinggg });
-    console.log("saved");
-    res.redirect(`/listing/${id}`);
-  })
-);
-
-  //Delete Route
-aap.delete("/listing/:id", wrapasync (async(req, res) => {
-    let { id } = req.params;
-    let deletedListing = await listing.findByIdAndDelete(id);
-    console.log(deletedListing);
-    res.redirect("/listing");
-  }));
-  
 
 
 
-  //  //after requiring expresserror
+
+//   Syntax:
+// app.use(path, callback)
+aap.use("/listing", listingsrouter);//after importing all the routes from line no 15 we will join the routes with /listings AS,
+//we had removed all the /listing from all the routes in routes/listing.js
+
+aap.use("/listing/:id/reviews",reviewsrouter);
+aap.use("/",userrouter);
+
+//error handling
+
+//after requiring expresserror
 //match the url req with all the routes if not available then page not found
 aap.all("*",(req,res,next)=>{
   next(new ExpressError(404,"page not found"))
@@ -198,6 +167,7 @@ aap.all("*",(req,res,next)=>{
   aap.use((err,req,res,next)=>{
     let{statuscode,message}=err;
     // res.render("error.ejs",{message});
+    //console.log(err);
     res.render("error.ejs",{message});
 
     

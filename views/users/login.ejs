@@ -1,0 +1,29 @@
+<% layout("/layouts/boilerplate") %>
+<div class="row"> 
+    <!-- offset for giving space from left -->
+   <h3  class="col-8 offset-2"  style="color: rgb(129, 225, 238);">Happy to see you here</h3> 
+   <h6  class="col-8 offset-2" >Login </h6>
+    
+    <div class="col-8 offset-2">
+       <form action="/login" method="POST" class="needs-validation" novalidate>
+
+        
+        <div  class="mb-3">
+             <label for="username" class="form-label">username</label>
+             <input required name="username" id="username"  type="text"  class="form-control" />
+        </div>
+
+  
+
+       <div  class="mb-3">
+        <label for="password" class="form-label">password</label>
+        <input required name="password" id="password"  type="password"  class="form-control" />
+       </div>
+      
+       <button class="btn btn-white" style="background-color:rgb(14, 103, 238) ;color: whitesmoke;width: 100px;font-size: small;letter-spacing: 0px;">Log in</button>
+
+    </form>
+    
+    
+    </div>
+</div>

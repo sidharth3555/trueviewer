@@ -8,6 +8,11 @@ body{
     flex: 1;
 }
 
+.f-info-socials{
+    position: sticky;
+    bottom: 0;
+}
+
 .navbar{
     height: 5rem;
     background-color: white;
@@ -91,5 +96,5 @@ body{
     display: flex;
   }
 
- }
+ 
 

@@ -1,6 +1,6 @@
 const mongoose =require("mongoose");
 const Schema = mongoose.Schema;
- 
+const   Review=require("./review.js");
 // title,image,price,location,country
 const listingschema =  new Schema({
 
@@ -10,18 +10,34 @@ const listingschema =  new Schema({
     },
 
    description:String,
+   priceunit:String,
+
 
     image:{
-       type: String,
-       //setting default value of img using ternary operator (ref:- mongooseejs,virtual)
-         //compare if empty string
-       set: (v)=> v === ""? 
-       "https://tse3.mm.bing.net/th?id=OIP.6vfVDA-9P3m1y4DddcFWoAHaEK&pid=Api&P=0&h=180"
-       :v,
+   url:String,
+   filename:String,
     },
-    price:Number,
+    price:String,
     location:String,
     country:String,
+    reviews:[
+        {//bracket important
+          type:Schema.Types.ObjectId,
+          ref:"Review"//reference is Review model
+        }
+    ],
+    owner:{
+      type:Schema.Types.ObjectId,
+      ref:"user",
+    },
+});
+
+//if a listing is deleted then the reviews associated to that review wont be automatically deleted from review schema
+//so to do that following code
+listingschema.post("findOneAndDelete",async(listing)=>{
+  if(listing){
+    await Review.deleteMany({_id:{$in: listing.reviews}});
+  }
 });
 
 const listing = mongoose.model("listing",listingschema);
